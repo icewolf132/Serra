@@ -32,11 +32,13 @@ void setup_Irrigazione()
   pinMode(pin_power,OUTPUT);
   pinMode(pin_dir,OUTPUT);
   pinMode(pin_vel,OUTPUT);
+
   pinMode(pin_acqua,OUTPUT);
 
   //Input
   pinMode(pin_FC1,INPUT);
   pinMode(pin_FC2,INPUT);
+
   pinMode(pin_START,INPUT);
   pinMode(pin_STOP,INPUT);
   pinMode(pin_MODO, INPUT);
@@ -75,7 +77,7 @@ void Irrigazione()
   {
     case 0: //tutto spendo
       barra(STOP,LENTO, DIETRO, DRY);
-      if(digitalRead(pin_START) == 1) stato_irrigazione=1; //se premo start
+      if(digitalRead(pin_START) == 0) stato_irrigazione=1; //se premo start
     break;
 
     case 1: //mando la barra all'inizio
@@ -93,10 +95,18 @@ void Irrigazione()
       else stato_irrigazione=5; //se Modo 1 (chiuso) vai allo stato 5
     break;
 
+    case 4: //è stato selezionato ritorno veloce senza irrigazione
+      barra (START, VELOCE, DIETRO, DRY);
+      if(digitalRead(pin_FC1) == 1) stato_irrigazione=0;
+    break;
+    
+
     case 5: //è stato selezionata ritorno lento con irrigazione
       barra (START, LENTO, DIETRO, WET);
       if(digitalRead(pin_FC1) == 1) stato_irrigazione=0;
-…        timerWrite(timer_STOP, 0); //Azzera il contatore a 0
+    break;
+
+       /*timerWrite(timer_STOP, 0); //Azzera il contatore a 0
         flag_STOP = false; //reseto il flag per sicurezza
         stato_irrigazione = stato_irrigazione_precedente; //se premo start il ciclo riprende da dov'era
       }
@@ -119,4 +129,5 @@ void setup()
 void loop() 
 {
   Irrigazione();
+  delay(1);
 }
