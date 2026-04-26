@@ -172,7 +172,7 @@ void Irrigazione()
 /****** FUNZIONI OBBLIGATORIE *****************/
 void setup() 
 {
-  myStepper.setSpeed(10);
+  myStepper.setSpeed(17);
   Serial.begin(9600);
   setup_Irrigazione();
 }

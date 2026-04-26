@@ -19,7 +19,7 @@ void setup() {
   pinMode(39, INPUT); //FC1
   pinMode(34, INPUT); //FC2
   // set the speed at 5 rpm
-  myStepper.setSpeed(10);
+  myStepper.setSpeed(14);
   // initialize the serial port
   Serial.begin(9600);
 }

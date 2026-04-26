@@ -1,0 +1,26 @@
+[p LITE_MODE AUTOSTATIC IEEE_DBL IEEE_FLT PIC14 PICREGULAR PICMID ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 16F88 ]
+[d frameptr 6 ]
+"10 /opt/microchip/xc8/v1.44/sources/common/sprcadd.c
+[v ___fladd __fladd `(d  1 e 4 0 ]
+"4 /opt/microchip/xc8/v1.44/sources/common/Umul8_16.c
+[v __Umul8_16 _Umul8_16 `(ui  1 e 2 0 ]
+"6 /opt/microchip/xc8/v1.44/sources/pic/eeprom.c
+[v _eecpymem eecpymem `(v  1 e 1 0 ]
+"39
+[v _memcpyee memcpyee `(v  1 e 1 0 ]
+"24 /home/william/MPLABXProjects/serra2.X/main.c
+[v _main main `(v  1 e 1 0 ]
+"226 /opt/microchip/xc8/v1.44/include/pic16f88.h
+[v _PORTB PORTB `VEuc  1 e 1 @6 ]
+"1147
+[v _TRISB TRISB `VEuc  1 e 1 @134 ]
+"2316
+[v _RB0 RB0 `VEb  1 e 0 @48 ]
+"24 /home/william/MPLABXProjects/serra2.X/main.c
+[v _main main `(v  1 e 1 0 ]
+{
+"36
+} 0

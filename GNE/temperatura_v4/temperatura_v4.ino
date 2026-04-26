@@ -4,7 +4,7 @@ hw_timer_t * timer_Irrigazione = NULL;
 volatile bool flag_Irrigazione = false;  // DEVE essere globale e volatile (usata nell'interrupt)
 
 // Constanti PIN per l'irrigazione
-static const int PIN_FINESTRE = 22, PIN_VENTOLE = 23, servoPin = 1;
+static const int PIN_FINESTRE = 22, PIN_VENTOLE = 23, servoPin = 16;
 
 // Costanti per il sensore (locali nella funzione sarebbe meglio, ma così eviti di ricalcolarle)
 const int ADC_ZERO_GRADI = 1070;
@@ -43,8 +43,8 @@ int sensoreTemp()
 
 void Temperatura(void)
 {
-  static int stato = 0;  // static: mantiene il valore tra le chiamate,
-  static bool timer_avviato = false;  // static: mantiene il valore tra le chiamate
+  static int stato = 0; 
+  static bool timer_avviato = false;  
   
   int temp = sensoreTemp();
   
@@ -75,9 +75,11 @@ void Temperatura(void)
       digitalWrite(PIN_VENTOLE, LOW);
       Serial.print(" | Finestre=1, Ventole=0");
       
-      if (!timer_avviato) {
+      if (timer_avviato=false) 
+      {
         // Ricrea il timer
-        if (timer != NULL) {
+        if (timer != NULL) 
+        {
           timerEnd(timer);
         }
         timer = timerBegin(1000000);
