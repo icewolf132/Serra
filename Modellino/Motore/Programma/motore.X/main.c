@@ -41,7 +41,8 @@ int power=0, dir=0, vel=0; // ingressi da ricevere dalla scheda main
 int A=0, B=0, C=0; // uscite da mandare al motore
 int enable=0; // variabile che gestisce l'abilitazione virtuale del power
 
-void input(void) {
+void input(void) 
+{
 
     TRISA = 0b11111100;
     
@@ -50,32 +51,32 @@ void input(void) {
     vel = RB4;
 }
 
-void processo(void) {
-
+void processo(void) 
+{
     int mod;
 
-    if (power = 1) {    //controlla lo stato de
+    if (power = 1)     //controlla lo stato de
+    {
         enable = 1;     //abilità il driver
         
         // 4 modalità possibili
-        if(dir == 1 && vel == 0){ // se avanti lento
+        if(dir == 0 && vel == 0) // se indietro lento
+        { 
 
         }
 
-        if(dir == 1 && vel == 0){ // se avanti veloce
+        if(dir == 0 && vel == 1) // se indietro veloce
+        { 
 
         }
 
-        if(dir == 1 && vel == 0){ // se avanti lento
+        if(dir == 1 && vel == 0) // se avanti lento
+        { 
 
         }
 
-        if(dir == 1 && vel == 0){ // se avanti lento
-
-        }
-
-        // se avanti veloce
-        // se dietro 
+        if(dir == 1 && vel == 1) // se avanti veloce
+        { 
 
         }
     }
