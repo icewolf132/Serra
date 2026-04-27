@@ -34,60 +34,83 @@
     1 = veloce
 */
 
-
-
-int power=0, dir=0, vel=0; // ingressi da ricevere dalla scheda main
-
-int A=0, B=0, C=0; // uscite da mandare al motore
-int enable=0; // variabile che gestisce l'abilitazione virtuale del power
-
-void input(void) 
-{
-
-    TRISA = 0b11111100;
+TRISA = 0b11111100;
     
     power = RB2;
     dir = RB3;
     vel = RB4;
-}
 
-void processo(void) 
+// INPUT
+int power=0, dir=0, vel=0; // ingressi da ricevere dalla scheda main
+
+// OUTPUT
+int A=0, B=0;   // direzione motore
+int C=0;        // enable motore
+
+void dir_out (int input)
 {
-    int mod;
-
-    if (power = 1)     //controlla lo stato de
+    switch (input)
     {
-        enable = 1;     //abilità il driver
-        
-        // 4 modalità possibili
-        if(dir == 0 && vel == 0) // se indietro lento
-        { 
+        case 0: // indietro
+            A = 0;
+            B = 1;
+            break;
 
-        }
-
-        if(dir == 0 && vel == 1) // se indietro veloce
-        { 
-
-        }
-
-        if(dir == 1 && vel == 0) // se avanti lento
-        { 
-
-        }
-
-        if(dir == 1 && vel == 1) // se avanti veloce
-        { 
-
-        }
+        case 1: // avanti
+            A = 1;
+            B = 0;
+            break;
     }
-    else enable = 0
 }
 
-void main(void) {
-    
-    while(1) {
-        input();
-        processo();
-        output();
+void vel_out (int speed)
+{
+    switch (speed)
+    {
+        case 0: // lento
+            C = 0;
+            break;
+
+        case 1: // avanti Duty cycle 50%
+            
+            break;
     }
+}
+
+void main(void)
+{
+    while(1) 
+    {
+        int mod;
+
+        if (power = 1)     //controlla lo stato de
+        {
+        
+            // 4 modalità possibili
+            if(dir == 0 && vel == 0) // se indietro lento
+            { 
+                dir_out(0);
+                vel_out(0);
+            }
+
+            if(dir == 0 && vel == 1) // se indietro veloce
+            { 
+                dir_out(0);
+                vel_out(1);
+            }
+
+            if(dir == 1 && vel == 0) // se avanti lento
+            { 
+                dir_out(1);
+                vel_out(0);
+            }
+
+            if(dir == 1 && vel == 1) // se avanti veloce
+            { 
+                dir_out(1);
+                vel_out(1);
+            }
+        }
+        else enable = 0
+        }
 }
