@@ -18,7 +18,7 @@ Sistema di controllo automatizzato per la gestione di una serra che segue la [tr
 
 ---
 
-### Autore
+### Autore del progetto
 
 * William Landolfi
 
