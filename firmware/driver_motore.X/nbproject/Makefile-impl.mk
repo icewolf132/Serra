@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=serra2.X
+PROJECTNAME=driver_motore.X
 
 # Active Configuration
 DEFAULTCONF=default
