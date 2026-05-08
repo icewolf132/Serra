@@ -1,5 +1,3 @@
-//HEADER
-
 // This is a guard condition so that contents of this file are not included
 // more than once.  
 #ifndef XC_HEADER_TEMPLATE_H
@@ -10,7 +8,7 @@
 
 // CONFIG1
 #pragma config FOSC = INTOSCIO // Selezione oscillatore (oscillatore EXTRC; funzione CLKO su RA6/OSC2/CLKO)
-#pragma config WDTE = ON        // Abilitazione Watchdog Timer (WDT attivo)
+#pragma config WDTE = OFF        // Abilitazione Watchdog Timer (WDT attivo)
 #pragma config PWRTE = OFF      // Abilitazione Power-up Timer (PWRT disattivato)
 #pragma config MCLRE = ON       // Selezione funzione pin RA5/MCLR/VPP (il pin funziona come MCLR)
 #pragma config BOREN = ON       // Abilitazione Brown-out Reset (BOR attivo)
@@ -21,8 +19,8 @@
 #pragma config CP = OFF         // Protezione codice memoria programma Flash (disattivata)
 
 // CONFIG2
-#pragma config FCMEN = ON       // Abilitazione monitor Fail-Safe del clock (attivo)
-#pragma config IESO = ON        // Abilitazione commutazione interna/esterna oscillatore (attiva)
+#pragma config FCMEN = OFF       // Abilitazione monitor Fail-Safe del clock (attivo)
+#pragma config IESO = OFF        // Abilitazione commutazione interna/esterna oscillatore (attiva)
 
 // Le direttive #pragma config devono precedere gli include del progetto.
 // Usa gli enum del progetto invece di #define per ON e OFF.
