@@ -1736,7 +1736,7 @@ extern __bank0 __bit __timeout;
 #pragma config LVP = OFF
 #pragma config CPD = OFF
 #pragma config WRT = OFF
-#pragma config CCPMX = RB0
+#pragma config CCPMX = RB3
 #pragma config CP = OFF
 
 
@@ -1744,11 +1744,62 @@ extern __bank0 __bit __timeout;
 #pragma config IESO = OFF
 # 9 "main.c" 2
 
+
+
+
+
+
+void pwm_init(void)
+{
+    TRISB0 = 0;
+
+
+    PR2 = 124;
+
+
+    CCP1CON = 0b00001100;
+
+
+    CCPR1L = 62;
+
+
+    T2CON = 0b00000111;
+}
+
+void dir_out (int input)
+{
+    switch (input)
+    {
+        case 0:
+            RA0 = 0;
+            RA1 = 1;
+            break;
+
+        case 1:
+            RA0 = 1;
+            RA1 = 0;
+            break;
+    }
+}
+
+void vel_out(int speed)
+{
+    switch(speed)
+    {
+        case 0:
+            CCPR1L = 93;
+            break;
+
+        case 1:
+            CCPR1L = 124;
+            break;
+    }
+}
+
 void main(void)
 {
     OSCCON = 0b01110000;
     ANSEL = 0x00;
-    CMCON = 0x07;
 
     TRISA = 0b00011100;
     PORTA = 0b00000000;
@@ -1756,11 +1807,37 @@ void main(void)
     TRISB = 0b00000000;
     PORTB = 0b00000000;
 
+    pwm_init();
+
     while(1)
     {
-        RA1=1;
-        RA0=0;
-        RB3=1;
+        if (RA2 == 1)
+        {
+
+            if(RA3 == 0 && RA4 == 0)
+            {
+                dir_out(0);
+                vel_out(0);
+            }
+
+            else if(RA3 == 0 && RA4 == 1)
+            {
+                dir_out(0);
+                vel_out(1);
+            }
+
+            else if(RA3 == 1 && RA4 == 0)
+            {
+                dir_out(1);
+                vel_out(0);
+            }
+
+            else if(RA3 == 1 && RA4 == 1)
+            {
+                dir_out(1);
+                vel_out(1);
+            }
+        }
     }
     return;
 }

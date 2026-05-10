@@ -15,7 +15,7 @@
 #pragma config LVP = OFF         // Abilitazione programmazione a bassa tensione (RB3/PGM attivo)
 #pragma config CPD = OFF        // Protezione codice memoria EEPROM dati (disattivata)
 #pragma config WRT = OFF        // Protezione scrittura memoria programma Flash (disattivata)
-#pragma config CCPMX = RB0      // Selezione pin CCP1 (funzione CCP1 su RB0)
+#pragma config CCPMX = RB3      // Selezione pin CCP1 (funzione CCP1 su RB0)
 #pragma config CP = OFF         // Protezione codice memoria programma Flash (disattivata)
 
 // CONFIG2
