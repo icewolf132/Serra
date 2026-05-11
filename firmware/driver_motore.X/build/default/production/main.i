@@ -1751,8 +1751,6 @@ extern __bank0 __bit __timeout;
 
 void pwm_init(void)
 {
-    TRISB0 = 0;
-
 
     PR2 = 124;
 
@@ -1762,8 +1760,25 @@ void pwm_init(void)
 
     CCPR1L = 62;
 
+    TRISB = 0x00;
+
 
     T2CON = 0b00000111;
+}
+
+void pwm_lento(void)
+{
+    CCP1CON = 0b00001100;
+    CCPR1L = 62;
+}
+
+void pwm_veloce(void)
+{
+    CCP1CON = 0x00;;
+    RB3=1;
+
+
+
 }
 
 void dir_out (int input)
@@ -1787,11 +1802,11 @@ void vel_out(int speed)
     switch(speed)
     {
         case 0:
-            CCPR1L = 93;
+            pwm_lento();
             break;
 
         case 1:
-            CCPR1L = 124;
+            pwm_veloce();
             break;
     }
 }
@@ -1837,6 +1852,11 @@ void main(void)
                 dir_out(1);
                 vel_out(1);
             }
+        }
+        else
+        {
+            CCP1CON = 0x00;
+            RB3 = 0;
         }
     }
     return;

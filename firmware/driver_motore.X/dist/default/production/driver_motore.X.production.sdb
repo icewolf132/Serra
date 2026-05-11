@@ -14,10 +14,14 @@
 "15 /home/william/Serra-git/firmware/driver_motore.X/main.c
 [v _pwm_init pwm_init `(v  1 e 1 0 ]
 "32
+[v _pwm_lento pwm_lento `(v  1 e 1 0 ]
+"38
+[v _pwm_veloce pwm_veloce `(v  1 e 1 0 ]
+"47
 [v _dir_out dir_out `(v  1 e 1 0 ]
-"48
+"63
 [v _vel_out vel_out `(v  1 e 1 0 ]
-"62
+"77
 [v _main main `(v  1 e 1 0 ]
 "166 /opt/microchip/mplabx/v6.20/packs/Microchip/PIC16Fxxx_DFP/1.6.156/xc8/pic/include/proc/pic16f88.h
 [v _PORTA PORTA `VEuc  1 e 1 @5 ]
@@ -49,27 +53,37 @@
 [v _RA3 RA3 `VEb  1 e 0 @43 ]
 "2405
 [v _RA4 RA4 `VEb  1 e 0 @44 ]
-"2624
-[v _TRISB0 TRISB0 `VEb  1 e 0 @1072 ]
-"62 /home/william/Serra-git/firmware/driver_motore.X/main.c
+"2426
+[v _RB3 RB3 `VEb  1 e 0 @51 ]
+"77 /home/william/Serra-git/firmware/driver_motore.X/main.c
 [v _main main `(v  1 e 1 0 ]
 {
-"106
+"126
 } 0
-"48
+"63
 [v _vel_out vel_out `(v  1 e 1 0 ]
 {
 [v vel_out@speed speed `i  1 p 2 0 ]
-"60
+"75
+} 0
+"38
+[v _pwm_veloce pwm_veloce `(v  1 e 1 0 ]
+{
+"45
+} 0
+"32
+[v _pwm_lento pwm_lento `(v  1 e 1 0 ]
+{
+"36
 } 0
 "15
 [v _pwm_init pwm_init `(v  1 e 1 0 ]
 {
 "30
 } 0
-"32
+"47
 [v _dir_out dir_out `(v  1 e 1 0 ]
 {
 [v dir_out@input input `i  1 p 2 0 ]
-"46
+"61
 } 0

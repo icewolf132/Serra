@@ -1736,7 +1736,7 @@ extern __bank0 __bit __timeout;
 #pragma config LVP = OFF
 #pragma config CPD = OFF
 #pragma config WRT = OFF
-#pragma config CCPMX = RB0
+#pragma config CCPMX = RB3
 #pragma config CP = OFF
 
 
@@ -1744,23 +1744,129 @@ extern __bank0 __bit __timeout;
 #pragma config IESO = OFF
 # 9 "main.c" 2
 
+
+
+
+
+
+void adc_init(void)
+{
+    CMCON = 0x07;
+    ADCON0 = 0b00011001;
+    ADCON1 = 0b10000000;
+}
+
+void pwm_init(void)
+{
+
+    PR2 = 124;
+
+
+    CCP1CON = 0b00001100;
+
+
+    CCPR1L = 62;
+
+    TRISB = 0x00;
+
+
+    T2CON = 0b00000111;
+}
+
+void pwm_lento(void)
+{
+    CCP1CON = 0b00001100;
+    CCPR1L = 62;
+}
+
+void pwm_veloce(void)
+{
+    CCP1CON = 0x00;;
+    RB3=1
+
+
+
+}
+
+void dir_out (int input)
+{
+    switch (input)
+    {
+        case 0:
+            RA0 = 0;
+            RA1 = 1;
+            break;
+
+        case 1:
+            RA0 = 1;
+            RA1 = 0;
+            break;
+    }
+}
+
+void vel_out(int speed)
+{
+    switch(speed)
+    {
+        case 0:
+            pwm_lento();
+            break;
+
+        case 1:
+            pwm_veloce();
+            break;
+    }
+}
+
 void main(void)
 {
     OSCCON = 0b01110000;
-    ANSEL = 0x00;
-    CMCON = 0x07;
+    ANSEL = 0b01000000;
 
     TRISA = 0b00011100;
     PORTA = 0b00000000;
 
-    TRISB = 0b00000000;
+    TRISB = 0b10000000;
     PORTB = 0b00000000;
+
+
+
+    pwm_init();
 
     while(1)
     {
-        RA1=1;
-        RA0=0;
-        RB3=1;
+        if (RA2 == 1)
+        {
+
+            if(RA3 == 0 && RA4 == 0)
+            {
+                dir_out(0);
+                vel_out(0);
+            }
+
+            else if(RA3 == 0 && RA4 == 1)
+            {
+                dir_out(0);
+                vel_out(1);
+            }
+
+            else if(RA3 == 1 && RA4 == 0)
+            {
+                dir_out(1);
+                vel_out(0);
+            }
+
+            else if(RA3 == 1 && RA4 == 1)
+            {
+                dir_out(1);
+                vel_out(1);
+            }
+        }
+        else
+        {
+            CCP1CON = 0x00;
+            RB3 = 0;
+        }
     }
     return;
 }
