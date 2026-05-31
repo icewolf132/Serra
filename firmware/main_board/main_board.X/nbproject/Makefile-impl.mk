@@ -27,7 +27,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=main_board.X
 
 # Active Configuration
-DEFAULTCONF=power
+DEFAULTCONF=default
 CONF=${DEFAULTCONF}
 
 # All Configurations

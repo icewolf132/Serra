@@ -26,3 +26,10 @@
 
 // Definizione del clock interno
 #define _XTAL_FREQ 4000000  // 4MHz (modifica se cambi il clock)
+
+#define FC1 RA1
+#define FC2 RA0
+#define START RD3
+#define STOP RD4
+#define MODO RD2
+
