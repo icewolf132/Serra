@@ -1,0 +1,53 @@
+[p GLOBOPT AUTOSTATIC IEEE_DBL IEEE_FLT PIC14 PICREGULAR PICMID ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 16F887 ]
+[d frameptr 0 ]
+"10 /opt/microchip/xc8/v3.10/pic/sources/c99/common/sprcadd.c
+[v ___fladd __fladd `(d  1 e 4 0 ]
+"4 /opt/microchip/xc8/v3.10/pic/sources/c99/common/Umul8_16.c
+[v __Umul8_16 _Umul8_16 `(ui  1 e 2 0 ]
+"6 /opt/microchip/xc8/v3.10/pic/sources/c99/pic/__eeprom.c
+[v ___eecpymem __eecpymem `(v  1 e 1 0 ]
+"39
+[v ___memcpyee __memcpyee `(v  1 e 1 0 ]
+"18 /home/william/Serra-git/firmware/main_board/timer_test.X/main.c
+[v _isr isr `II(v  1 e 1 0 ]
+"29
+[v _main main `(v  1 e 1 0 ]
+"650 /opt/microchip/mplabx/v6.20/packs/Microchip/PIC16Fxxx_DFP/1.6.156/xc8/pic/include/proc/pic16f887.h
+[v _TMR1 TMR1 `VEus  1 e 2 @14 ]
+"671
+[v _T1CON T1CON `VEuc  1 e 1 @16 ]
+"3900
+[v _GIE GIE `VEb  1 e 0 @95 ]
+"4044
+[v _PEIE PEIE `VEb  1 e 0 @94 ]
+"4137
+[v _RC0 RC0 `VEb  1 e 0 @56 ]
+"4197
+[v _RD4 RD4 `VEb  1 e 0 @68 ]
+"4374
+[v _TMR1IE TMR1IE `VEb  1 e 0 @1120 ]
+"4377
+[v _TMR1IF TMR1IF `VEb  1 e 0 @96 ]
+"4452
+[v _TRISC0 TRISC0 `VEb  1 e 0 @1080 ]
+"4488
+[v _TRISD4 TRISD4 `VEb  1 e 0 @1092 ]
+"14 /home/william/Serra-git/firmware/main_board/timer_test.X/main.c
+[v _ms ms `VEul  1 e 4 0 ]
+"15
+[v _start start `ul  1 e 4 0 ]
+"16
+[v _running running `i  1 e 2 0 ]
+"29
+[v _main main `(v  1 e 1 0 ]
+{
+"60
+} 0
+"18
+[v _isr isr `II(v  1 e 1 0 ]
+{
+"27
+} 0

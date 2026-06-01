@@ -27,9 +27,25 @@
 // Definizione del clock interno
 #define _XTAL_FREQ 4000000  // 4MHz (modifica se cambi il clock)
 
+//INPUT
 #define FC1 RA1
 #define FC2 RA0
+#define TEMP RA2
+
+//MOTORE
+#define POWER RA3
+#define DIREZIONE RA4
+#define VELOCITA RA5
+#define ENCODER RC1
+
+//RELÈ
+#define VENTILAZIONE RC0
+#define ACQUA RC2
+#define FINESTRE RC3
+
+//TASTI
+#define MODO RD2
 #define START RD3
 #define STOP RD4
-#define MODO RD2
 
+//DISPLAY
