@@ -5,9 +5,9 @@ Linker command line:
 -W-3 --edf=/opt/microchip/xc8/v3.10/pic/dat/20250813170317_en.msgs -cn \
   -h+dist/default/debug/driver_motore.X.debug.sym \
   --cmf=dist/default/debug/driver_motore.X.debug.cmf -z -Q16F88 \
-  -o/tmp/xcXbMJmGi/driver_tmp_3.o --defsym=__MPLAB_BUILD=1 \
+  -o/tmp/xcXPGlncn/driver_tmp_3.o --defsym=__MPLAB_BUILD=1 \
   --fixupoverflow=error -Mdist/default/debug/driver_motore.X.debug.map \
-  --md=/tmp/xcXbMJmGi/driver_tmp_0.dat -E1 -ver=XC8 Compiler \
+  --md=/tmp/xcXPGlncn/driver_tmp_0.dat -E1 -ver=XC8 Compiler \
   -ACODE=00h-07FFh,0800h-0EFFh -ASTRCODE=00h-0EFFh -ASTRING=00h-0FFhx15 \
   -ACONST=00h-0FFhx15 -AENTRY=00h-0FFhx15 -ACOMMON=071h-07Fh \
   -ABANK0=020h-06Fh -ABANK1=0A0h-0EFh -ABANK2=0110h-016Fh \
@@ -18,7 +18,7 @@ Linker command line:
   -AEEDATA=00h-0FFh/02100h -peeprom_data=EEDATA -DEEDATA=2 -DCODE=2 \
   -DSTRCODE=2 -DSTRING=2 -DCONST=2 -DENTRY=2 \
   -preset_vec=00h,intentry,sivt,init,end_init -ppowerup=CODE -pcinit=CODE \
-  -pfunctab=ENTRY -k /tmp/xcXbMJmGi/driver_tmp_12.o \
+  -pfunctab=ENTRY -k /tmp/xcXPGlncn/driver_tmp_12.o \
   dist/default/debug/driver_motore.X.debug.o 
 
 Object code version is 3.11
@@ -28,7 +28,7 @@ Machine type is 16F88
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-/tmp/xcXbMJmGi/driver_tmp_12.o
+/tmp/xcXPGlncn/driver_tmp_12.o
                 end_init                              1        1        2        0       0
                 reset_vec                             0        0        1        0       0
                 config                             2007     2007        2        0       4
@@ -37,12 +37,12 @@ dist/default/debug/driver_motore.X.debug.o
                 cinit                               7FD      7FD        3      FFA       0
                 config                             2007     2007        2        0       4
                 idloc                              2000     2000        4        0       5
-                text5                               76E      76E       19      EDC       0
-                text4                               745      745       12      E8A       0
-                text3                               737      737        7      E6E       0
-                text2                               73E      73E        7      E7C       0
-                text1                               757      757       17      EAE       0
-                maintext                            787      787       76      F0E       0
+                text5                               76C      76C       19      ED8       0
+                text4                               743      743       12      E86       0
+                text3                               73C      73C        7      E78       0
+                text2                               737      737        5      E6E       0
+                text1                               755      755       17      EAA       0
+                maintext                            785      785       78      F0A       0
                 cstackCOMMON                         71       71        2       71       1
 
 TOTAL           Name                               Link     Load   Length     Space
@@ -50,12 +50,12 @@ TOTAL           Name                               Link     Load   Length     Sp
                 end_init                              1        1        2         0
                 cinit                               7FD      7FD        3         0
                 reset_vec                             0        0        1         0
-                text5                               76E      76E       19         0
-                text4                               745      745       12         0
-                text3                               737      737        7         0
-                text2                               73E      73E        7         0
-                text1                               757      757       17         0
-                maintext                            787      787       76         0
+                text5                               76C      76C       19         0
+                text4                               743      743       12         0
+                text3                               73C      73C        7         0
+                text2                               737      737        5         0
+                text1                               755      755       17         0
+                maintext                            785      785       78         0
 
         CLASS   STRCODE        
 
@@ -105,13 +105,13 @@ TOTAL           Name                               Link     Load   Length     Sp
 
 SEGMENTS        Name                           Load    Length   Top    Selector   Space  Class     Delta
 
-                text1                          000757  000017  00076E       EAE       0  CODE        2
+                text1                          000755  000017  00076C       EAA       0  CODE        2
                 reset_vec                      000000  000003  000003         0       0  CODE        2
-                text4                          000745  000012  000757       E8A       0  CODE        2
-                text5                          00076E  000019  000787       EDC       0  CODE        2
-                maintext                       000787  000076  0007FD       F0E       0  CODE        2
-                text2                          00073E  000007  000745       E7C       0  CODE        2
-                text3                          000737  000007  00073E       E6E       0  CODE        2
+                text4                          000743  000012  000755       E86       0  CODE        2
+                text5                          00076C  000019  000785       ED8       0  CODE        2
+                maintext                       000785  000078  0007FD       F0A       0  CODE        2
+                text3                          00073C  000007  000743       E78       0  CODE        2
+                text2                          000737  000005  00073C       E6E       0  CODE        2
                 cinit                          0007FD  000003  000800       FFA       0  CODE        2
                 cstackCOMMON                   000071  000002  000073        71       1  COMMON      1
 
@@ -146,9 +146,12 @@ UNUSED ADDRESS RANGES
 
                                   Symbol Table
 
+_ADCON0                  (abs)        001F
+_ADCON1                  (abs)        009F
 _ANSEL                   (abs)        009B
 _CCP1CON                 (abs)        0017
 _CCPR1L                  (abs)        0015
+_CMCON                   (abs)        009C
 _OSCCON                  (abs)        008F
 _PORTA                   (abs)        0005
 _PORTB                   (abs)        0006
@@ -249,26 +252,26 @@ ___stack_lo              stack        0000
 ___stackhi               (abs)        0000
 ___stacklo               (abs)        0000
 __end_of__initialization cinit        07FD
-__end_of_dir_out         text5        0787
+__end_of_dir_out         text5        0785
 __end_of_main            maintext     07FD
-__end_of_pwm_init        text4        0757
-__end_of_pwm_lento       text3        073E
-__end_of_pwm_veloce      text2        0745
-__end_of_vel_out         text1        076E
+__end_of_pwm_init        text4        0755
+__end_of_pwm_lento       text3        0743
+__end_of_pwm_veloce      text2        073C
+__end_of_vel_out         text1        076C
 __initialization         cinit        07FD
 __pcstackCOMMON          cstackCOMMON 0071
-__pmaintext              maintext     0787
-__ptext1                 text1        0757
-__ptext2                 text2        073E
-__ptext3                 text3        0737
-__ptext4                 text4        0745
-__ptext5                 text5        076E
-_dir_out                 text5        076E
-_main                    maintext     0787
-_pwm_init                text4        0745
-_pwm_lento               text3        0737
-_pwm_veloce              text2        073E
-_vel_out                 text1        0757
+__pmaintext              maintext     0785
+__ptext1                 text1        0755
+__ptext2                 text2        0737
+__ptext3                 text3        073C
+__ptext4                 text4        0743
+__ptext5                 text5        076C
+_dir_out                 text5        076C
+_main                    maintext     0785
+_pwm_init                text4        0743
+_pwm_lento               text3        073C
+_pwm_veloce              text2        0737
+_vel_out                 text1        0755
 btemp                    (abs)        007E
 btemp0                   (abs)        007E
 btemp1                   (abs)        007F
@@ -299,12 +302,12 @@ shared
 shared estimated size: 1
 
 main.c
-		_pwm_veloce    		CODE           	073E	0000	7
-		_main          		CODE           	0787	0000	118
-		_vel_out       		CODE           	0757	0000	23
-		_dir_out       		CODE           	076E	0000	25
-		_pwm_lento     		CODE           	0737	0000	7
-		_pwm_init      		CODE           	0745	0000	18
+		_pwm_veloce    		CODE           	0737	0000	5
+		_main          		CODE           	0785	0000	120
+		_vel_out       		CODE           	0755	0000	23
+		_dir_out       		CODE           	076C	0000	25
+		_pwm_lento     		CODE           	073C	0000	7
+		_pwm_init      		CODE           	0743	0000	18
 
 main.c estimated size: 198
 

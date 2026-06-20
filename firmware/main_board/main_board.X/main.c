@@ -12,7 +12,8 @@
 // VARIABILI GLOBALI
 // #################
 int stato_mot = 0;
-
+int stato_stop = 0;
+int stato_start = 0;
 int stop_flag = 0;
 
 volatile unsigned long ms = 0;
@@ -22,32 +23,35 @@ unsigned long start = 0;
 // #################
 // DRIVER
 // #################
-void driver(int power, int dir, int vel, int acqua)
+void driver( int Power, int Dir, int Vel, int Acqua)
 {
-    RA3 = power;
-    RA4 = dir;
-    RA5 = vel;
-    RC2 = acqua;
+    static int power, dir, vel,acqua;
+    power = Power;
+    dir = Dir;
+    vel = Vel;
+    acqua =Acqua;
+            
+    if (power == 0 )
+        RA3 = 0;
+    else if (power == 1)
+        RA3 = 1;
+    
+    if (dir == 0 )
+        RA4 = 0;
+    else if (dir == 1)
+        RA4 = 1;
+    
+    if (vel == 0 )
+        RA5 = 0;
+    else if (vel == 1)
+        RA5 = 1;
+    
+    if (acqua == 0 )
+        RC2 = 0;
+    else if (acqua == 1)
+        RC2 = 1;
 }
 
-unsigned int ADC_Read(unsigned char channel) 
-{
-    ADCON0 &= 0b11000101;          // pulisce CHS
-    ADCON0 |= (channel << 3);      // seleziona canale
-    __delay_ms(2);                 // tempo di acquisizione
-
-    GO_nDONE = 1;                  // avvia conversione
-    while(GO_nDONE);               // attende fine conversione
-
-    return ((ADRESH << 8) + ADRESL);
-}
-
-int leggiTemperatura(void)
-{
-    unsigned int adc = ADC_Read(2);       // AN2
-    unsigned int temp = (adc * 500) / 1023; // temperatura �C intera
-    return temp;
-}
 
 
 // #################
@@ -66,7 +70,7 @@ void __interrupt() isr()
 }
 
 // #################
-// TASK MOTORE (FSM)
+// TASK MOTORE
 // #################
 
 void Task_Motore(void)
@@ -77,10 +81,12 @@ void Task_Motore(void)
     {
         case 0: // tutto spento
             driver(0,0,0,0);
+            stato_start = 0;
             if(START == 0) stato_mot = 1; // se premo start
         break;
 
         case 1: // vedo dove sta la barra
+            stato_start = 1;
             if(FC1 == 0) // se non sta all'inizio
                 stato_mot = 2;
             else // se sta all'inizio
@@ -111,6 +117,8 @@ void Task_Motore(void)
             driver(1,0,1,0);
             if(FC1 == 1) 
             {   
+                driver (1,1,1,0);
+                __delay_ms(30);
                 driver (0,0,0,0);
                 stato_mot = 0; // se arrivo all'inizio
             }
@@ -128,7 +136,7 @@ void Task_Stop(void)
     switch(stato_stop)
     {
         case 0: //tasto non premuto aspetto che venga premuto
-            if (STOP == 0) stato_stop = 1; // se il tasto viene premuto
+            if ((STOP == 0) && (stato_mot >> 1)) stato_stop = 1; // se il tasto viene premuto
         break;
 
         case 1: // il tasto è stato premuto
@@ -153,38 +161,100 @@ void Task_Stop(void)
         case 4: // fai tornare la barra ad inizio serra
             stato_mot = 6; // dico al programma del motore da che punto deve continuare 
             stop_flag = 0; // segnalo che il motore può continuare il suo lavoro
-            stato_stop = 0;
+            stato_stop = 5;
+        break;
+        
+        case 5:
+            if (stato_mot == 0 )stato_stop = 0;
         break;
     }
 }
+
+ 
+ 
 // #################
-// VENTILAZIONE (sempre attiva)
+// VENTILAZIONE
 // #################
 void Task_Ventilazione(void)
 {
-    static unsigned char adc_attivo = 0;
-    static unsigned long val_medio = 0;
-    static unsigned int temp = 0;
-    unsigned int adc;
+    static unsigned int filtro = 0; // media mobile IIR
+    unsigned int adc, temp;
 
-    if(adc_attivo == 0)
+    // Legge ADC AN2
+    GO_nDONE = 1;
+    while(GO_nDONE);
+    adc = ((unsigned int)ADRESH << 8) | ADRESL;
+
+    // Converte in �C (LM35)
+    //temp = (adc * 500) / 1023;
+
+    filtro = (filtro * 7 + adc) / 8;
+
+    // Isteresi ventilazione
+    if(filtro >= 61) 
+        VENTILAZIONE = 1;   // ~30�C
+    else if(filtro <= 55) 
+        VENTILAZIONE = 0;   // ~27�C
+}
+
+// #################
+// VISUALIZZAZIONE
+// #################
+void Task_Visualizzazione (void)
+{
+    //assegno i caratteri
+    static int carattere_1[5] = 
     {
-        GO_nDONE = 1;      // avvia conversione
-        adc_attivo = 1;
+        0b01111110, // carattere O
+        0b11100010, // carattere F
+        0b10101000, // carattere n
+        0b10110000, // carattere c
+        0b11111000, // carattere E
+    };
+
+    static int carattere_2[5] = 
+    {
+        0b01111110, // carattere O
+        0b11100010, // carattere F
+        0b10101000, // carattere n
+        0b10110000, // carattere c
+        0b11111000, // carattere E
+    };
+
+    static int x, y;
+    
+    // scelgo cosa visualizzare
+    if (FC1 && FC2) // se entrambi i finecorsa sono premuti
+    {
+            x = 0; // visualizza FC
+            y = 2;
     }
-    else
+    else // sennò
     {
-        if(GO_nDONE == 0)  // conversione terminata
+        if (stato_stop == 1) // se la barra è ferma
         {
-            adc = ((unsigned int)ADRESH << 8) | ADRESL;
-            val_medio = (val_medio * 9 + adc) / 10;   // filtro su 10 campioni
-            temp = (val_medio * 500) / 1023;
-            adc_attivo = 0;  // pronto per una nuova conversione
+            x = 0; // visualizza OF
+            y = 1;
+        }
+
+        if ( (stato_start == 1) && (stato_stop == 1) ) // se la barra è in movimento
+        {
+            x = 0; // visualizza ON
+            y = 2;
         }
     }
-    
-    if(temp >= 30) VENTILAZIONE = 1;
-    else if(temp <= 27) VENTILAZIONE = 0;
+
+    // Visualizzo
+        // digit 1 
+    RD6 = 1;    //EN D1
+    RD7 = 0;    //EN D2
+    PORTB = carattere_1[x];
+        // digit 2
+    __delay_ms (5);
+    RD6 = 0;    //EN D1
+    RD7 = 1;    //EN D2
+    PORTB = carattere_2[y];
+    __delay_ms (5);
 }
 
 // #################
@@ -211,22 +281,23 @@ void main(void)
     ADCON0 = 0x09;      // AN2 selected, ADC ON
     ADCON1 = 0x80;      // Vref+ = Vdd, Vref- = Vss
     
-    TRISB = 0b00000111;
+    TRISB = 0b00000000;
     TRISC = 0b00000010;
     TRISD = 0b00011100;
 
-    PORTA = 0;
-    PORTB = 0;
-    PORTC = 0;
-    PORTD = 0;
+    PORTA = 0x00;
+    PORTB = 0x00;
+    PORTC = 0x00;
+    PORTD = 0x00;
 
     Timer1_Init();
 
     while(1)
     {
-       
+        
         Task_Motore();
-        //Task_Stop();
+        Task_Stop();
         Task_Ventilazione();
+        Task_Visualizzazione();
     }
 }

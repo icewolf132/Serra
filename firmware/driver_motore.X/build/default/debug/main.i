@@ -1776,13 +1776,13 @@ void pwm_init(void)
 void pwm_lento(void)
 {
     CCP1CON = 0b00001100;
-    CCPR1L = 62;
+    CCPR1L = 40;
 }
 
 void pwm_veloce(void)
 {
     CCP1CON = 0x00;;
-    RB3=1
+    RB3=1;
 
 
 

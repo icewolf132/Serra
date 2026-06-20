@@ -1749,6 +1749,13 @@ extern __bank0 __bit __timeout;
 
 
 
+void adc_init(void)
+{
+    CMCON = 0x07;
+    ADCON0 = 0b00011001;
+    ADCON1 = 0b10000000;
+}
+
 void pwm_init(void)
 {
 
@@ -1814,13 +1821,15 @@ void vel_out(int speed)
 void main(void)
 {
     OSCCON = 0b01110000;
-    ANSEL = 0x00;
+    ANSEL = 0b01000000;
 
     TRISA = 0b00011100;
     PORTA = 0b00000000;
 
-    TRISB = 0b00000000;
+    TRISB = 0b10000000;
     PORTB = 0b00000000;
+
+
 
     pwm_init();
 
@@ -1859,5 +1868,4 @@ void main(void)
             RB3 = 0;
         }
     }
-    return;
 }

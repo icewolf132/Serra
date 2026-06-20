@@ -27,7 +27,7 @@ void pwm_init(void)
     // PWM mode
     CCP1CON = 0b00001100; 
 
-    // Duty cycle 50%
+    // Duty cycle 50% a 62
     CCPR1L = 62; // Set the PWM duty cycle
 
     TRISB = 0x00; // Make the CCP1 pin an output
@@ -45,7 +45,7 @@ void pwm_lento(void)
 void pwm_veloce(void)
 {
     CCP1CON = 0x00;;
-    RB3=1
+    RB3=1;
     
     //CCP1CON = 0b00001100;
     //CCPR1L = 124;
@@ -131,5 +131,4 @@ void main(void)
             RB3 = 0;
         }
     }
-    return;
 }
