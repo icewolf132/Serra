@@ -2,3 +2,18 @@
 /Modellino/Motore/Programma/driver_motore.X/build/
 /firmware/main_board/main_board.X/build/
 /firmware/main_board/main_board.X/dist/
+# Cronologia locale editor
+.history/
+
+# Backup automatici KiCad
+*-backups/
+fp-info-cache
+
+# Output compilazione MPLAB X
+build/
+dist/
+*.X/defmplabxtrace.log*
+
+# File temporanei
+~*.lck
+defmplabxtrace.log*
