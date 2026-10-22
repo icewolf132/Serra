@@ -16,6 +16,27 @@ int stato_stop = 0;
 int stato_start = 0;
 int stop_flag = 0;
 
+//assegno i caratteri
+     int carattere_1[5] = 
+    {
+        0b01111110, // carattere O
+        0b11100010, // carattere F
+        0b10101000, // carattere n
+        0b10110000, // carattere c
+        0b11111000, // carattere E
+    };
+
+     int carattere_2[5] = 
+    {
+        0b01111110, // carattere O
+        0b11100010, // carattere F
+        0b10101000, // carattere n
+        0b10110000, // carattere c
+        0b11111000, // carattere E
+    };
+
+     int x, y;
+
 volatile unsigned long ms = 0;
 unsigned long start = 0;
 
@@ -173,28 +194,39 @@ void Task_Stop(void)
  
  
 // #################
-// VENTILAZIONE
+// VENTILAZIONE (Controllo Rel� Termostato)
 // #################
 void Task_Ventilazione(void)
 {
-    static unsigned int filtro = 0; // media mobile IIR
-    unsigned int adc, temp;
+    static unsigned int filtro = 0; 
+    static char prima_lettura = 1;  
+    unsigned int adc;
 
-    // Legge ADC AN2
+    // 1. IMPORTANTE: Aspetta che il condensatore dell'ADC si carichi
+    __delay_us(20); 
+
+    // 2. Fai partire la conversione
     GO_nDONE = 1;
-    while(GO_nDONE);
+    while(GO_nDONE); // Aspetta la fine
+    
     adc = ((unsigned int)ADRESH << 8) | ADRESL;
 
-    // Converte in �C (LM35)
-    //temp = (adc * 500) / 1023;
+    if(prima_lettura) {
+        filtro = adc;
+        prima_lettura = 0;
+    } else {
+        filtro = (filtro * 7 + adc) / 8; 
+    }
 
-    filtro = (filtro * 7 + adc) / 8;
-
-    // Isteresi ventilazione
-    if(filtro >= 61) 
-        VENTILAZIONE = 1;   // ~30�C
-    else if(filtro <= 55) 
-        VENTILAZIONE = 0;   // ~27�C
+    // Controllo soglie
+    if(filtro >= 143)       // >= 70�C
+    {
+        VENTILAZIONE = 1;   
+    }
+    else if(filtro <= 72)   // <= 35�C
+    {
+        VENTILAZIONE = 0;   
+    }
 }
 
 // #################
@@ -202,46 +234,25 @@ void Task_Ventilazione(void)
 // #################
 void Task_Visualizzazione (void)
 {
-    //assegno i caratteri
-    static int carattere_1[5] = 
+    if (FC1 && FC2)
     {
-        0b01111110, // carattere O
-        0b11100010, // carattere F
-        0b10101000, // carattere n
-        0b10110000, // carattere c
-        0b11111000, // carattere E
-    };
-
-    static int carattere_2[5] = 
-    {
-        0b01111110, // carattere O
-        0b11100010, // carattere F
-        0b10101000, // carattere n
-        0b10110000, // carattere c
-        0b11111000, // carattere E
-    };
-
-    static int x, y;
-    
-    // scelgo cosa visualizzare
-    if (FC1 && FC2) // se entrambi i finecorsa sono premuti
-    {
-            x = 0; // visualizza FC
-            y = 2;
+        x = 1;     // F
+        y = 3;     // c
     }
-    else // sennò
+    else if (stop_flag)
     {
-        if (stato_stop == 1) // se la barra è ferma
-        {
-            x = 0; // visualizza OF
-            y = 1;
-        }
-
-        if ( (stato_start == 1) && (stato_stop == 1) ) // se la barra è in movimento
-        {
-            x = 0; // visualizza ON
-            y = 2;
-        }
+        x = 0;     // O
+        y = 1;     // F
+    }
+    else if (stato_mot != 0)
+    {
+        x = 0;     // O
+        y = 2;     // n
+    }
+    else
+    {
+        x = 0;     // O
+        y = 0;     // O
     }
 
     // Visualizzo
@@ -274,22 +285,33 @@ void Timer1_Init(void)
 // #################
 void main(void)
 {
+    // 1. Configurazione Oscillatore (4 MHz interno)
     OSCCON = 0b01100000;
 
-    TRISA = 0b00000111;
-    ANSEL = 0x04;       // AN2 analogico
-    ADCON0 = 0x09;      // AN2 selected, ADC ON
-    ADCON1 = 0x80;      // Vref+ = Vdd, Vref- = Vss
-    
+    // 2. Configurazione I/O Direzione (TRIS)
+    TRISA = 0b00000111;    // RA2 (AN2) deve essere ingresso
     TRISB = 0b00000000;
-    TRISC = 0b00000010;
+    TRISC = 0b00000010;    // Configura RC2 come uscita per il rel� (se usi RC2)
     TRISD = 0b00011100;
 
+    // Stato iniziale delle uscite a zero
     PORTA = 0x00;
     PORTB = 0x00;
     PORTC = 0x00;
     PORTD = 0x00;
 
+    // 3. Configurazione ADC per AN2
+    ANSEL = 0x04;          // Imposta solo AN2 come analogico (0b00000100)
+    ANSELH = 0x00;         // Tutti gli altri pin digitali
+
+    ADCON1bits.ADFM = 1;   // Giustificazione a destra (importante per i 10 bit)
+    ADCON1bits.VCFG0 = 0;  // Vref+ = VDD (5V)
+    ADCON1bits.VCFG1 = 0;  // Vref- = VSS (GND)
+
+    // ADCON0: bit7-6 (Fosc/8), bit5-2 (Channel AN2: 0010), bit1 (GO/DONE=0), bit0 (ADON=1)
+    ADCON0 = 0b01001001;   
+
+    // 4. Inizializzazione Periferiche e Interrupt
     Timer1_Init();
 
     while(1)
